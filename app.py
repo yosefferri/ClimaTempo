@@ -24,20 +24,23 @@ st.subheader("Clima nas principais cidades")
 
 lista_cidades = list(cidades_fixas.items())
 
-# Linha 1: só Jaú, em destaque
-nome_cidade, coordenadas = lista_cidades[0]  # Jaú é a primeira do dicionário
+# ---------- Linha 1: só Jaú ----------
+nome_cidade, coordenadas = lista_cidades[0]
 latitude_fixa, longitude_fixa = coordenadas
 dados_fixos = buscar_clima(latitude_fixa, longitude_fixa)
 
-st.metric(
-    nome_cidade,
-    f"{dados_fixos['current']['temperature_2m']} °C",
-    f"{dados_fixos['current']['relative_humidity_2m']}% umidade"
-)
+if "current" in dados_fixos:
+    st.metric(
+        nome_cidade,
+        f"{dados_fixos['current']['temperature_2m']} °C",
+        f"{dados_fixos['current']['relative_humidity_2m']}% umidade"
+    )
+else:
+    st.warning(f"Não foi possível carregar {nome_cidade}")
 
-st.write("")  # pequeno espaço entre as duas linhas
+st.write("")
 
-# Linha 2: as outras 5 cidades juntas
+# ---------- Linha 2: as outras 5 cidades ----------
 colunas_linha2 = st.columns(5)
 for i in range(1, 6):
     nome_cidade, coordenadas = lista_cidades[i]
@@ -45,14 +48,15 @@ for i in range(1, 6):
     dados_fixos = buscar_clima(latitude_fixa, longitude_fixa)
 
     with colunas_linha2[i - 1]:
-        st.metric(
-            nome_cidade,
-            f"{dados_fixos['current']['temperature_2m']} °C",
-            f"{dados_fixos['current']['relative_humidity_2m']}% umidade"
-        )
-
-st.divider()
-
+        if "current" in dados_fixos:
+            st.metric(
+                nome_cidade,
+                f"{dados_fixos['current']['temperature_2m']} °C",
+                f"{dados_fixos['current']['relative_humidity_2m']}% umidade"
+            )
+        else:
+            st.warning(f"Não foi possível carregar {nome_cidade}")
+st.write("")
 
 def carregar_css(caminho_arquivo):
     with open(caminho_arquivo) as f:
