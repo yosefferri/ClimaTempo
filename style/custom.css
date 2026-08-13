@@ -1,0 +1,35 @@
+.stTextInput input {
+    font-size: 30px;
+}
+
+h1 {
+    text-align: center;
+    color: #4FC3F7;
+    font-size: 50px !important;
+}
+
+/* Caption (st.caption) */
+[data-testid="stCaptionContainer"] {
+    text-align: center;
+    font-size: 20px;
+}
+
+.stTextInput label p {
+    font-size: 28px;
+}
+
+.stSelectbox div[data-baseweb="select"] {
+    font-size: 30px;
+}
+
+.stSelectbox label p {
+    font-size: 28px;
+}
+
+.stApp {
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03) 0%, transparent 25%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04) 0%, transparent 30%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.03) 0%, transparent 20%),
+        linear-gradient(180deg, #0d1b2a 0%, #1b3a5c 50%, #2c5f8a 100%);
+}
