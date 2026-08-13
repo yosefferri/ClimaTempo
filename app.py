@@ -40,7 +40,7 @@ else:
 
 st.write("")
 
-# ---------- Linha 2: as outras 5 cidades ----------
+# ---------- Linha 2: as outras 5 cidades ---------
 colunas_linha2 = st.columns(5)
 for i in range(1, 6):
     nome_cidade, coordenadas = lista_cidades[i]

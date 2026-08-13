@@ -14,3 +14,4 @@ def buscar_clima(latitude, longitude):
     }
     resposta = requests.get(url, params=parametros, timeout=10)
     return resposta.json()
+#2054
