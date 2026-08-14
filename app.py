@@ -72,7 +72,7 @@ if nome_digitado:
 
     if "results" in resultados:
         opcoes = [f"{r['name']}, {r['admin1']}, {r['country']}" for r in resultados["results"]]
-        cidade_escolhida = st.selectbox("Selecione a cidade correta", opcoes)
+        cidade_escolhida = st.selectbox("Se caso não for a cidade correta, clique aqui", opcoes)
 
         indice = opcoes.index(cidade_escolhida)
         latitude = resultados["results"][indice]["latitude"]
