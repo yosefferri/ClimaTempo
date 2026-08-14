@@ -83,42 +83,46 @@ if nome_digitado:
 
         dados_clima = buscar_clima(latitude, longitude)
 
-        # Pega a hora atual, no mesmo formato que a API usa (ex: "2026-08-13T19:00")
-        agora = datetime.now().strftime("%Y-%m-%dT%H:00")
+        if "current" in dados_clima:
+            # ---------- Parte 1: as métricas de agora ----------
+            col1, col2, col3, col4, col5 = st.columns(5)
+            col1.metric("Temperatura", f"{dados_clima['current']['temperature_2m']} °C")
+            col2.metric("Umidade", f"{dados_clima['current']['relative_humidity_2m']}%")
+            col3.metric("Vento", f"{dados_clima['current']['wind_speed_10m']} km/h")
+            col4.metric("Chuva agora", f"{dados_clima['current']['precipitation']} mm")
 
-        lista_horarios = dados_clima["hourly"]["time"]
-        lista_probabilidades = dados_clima["hourly"]["precipitation_probability"]
+            # ---------- Parte 2: seu código de probabilidade (o que você já tinha) ----------
+            agora = datetime.now().strftime("%Y-%m-%dT%H:00")
 
-        if agora in lista_horarios:
-            indice_agora = lista_horarios.index(agora)
-            probabilidade_chuva = lista_probabilidades[indice_agora]
+            lista_horarios = dados_clima["hourly"]["time"]
+            lista_probabilidades = dados_clima["hourly"]["precipitation_probability"]
+
+            if agora in lista_horarios:
+                indice_agora = lista_horarios.index(agora)
+                probabilidade_chuva = lista_probabilidades[indice_agora]
+            else:
+                probabilidade_chuva = "Nenhuma"
+
+            col5.metric("Chance de chuva", f"{probabilidade_chuva}%")
+
+            # ---------- Parte 3: o gráfico de previsão ----------
+            st.subheader("Previsão de chuva para hoje")
+
+            df_previsao = pd.DataFrame({
+                "hora": dados_clima["hourly"]["time"],
+                "probabilidade": dados_clima["hourly"]["precipitation_probability"]
+            })
+
+            fig_previsao = px.line(
+                df_previsao,
+                x="hora",
+                y="probabilidade",
+                labels={"hora": "Hora", "probabilidade": "Chance de chuva (%)"}
+            )
+
+            st.plotly_chart(fig_previsao, use_container_width=True, key="grafico_previsao_chuva")
+
         else:
-            probabilidade_chuva = "Nenhuma"
-
-        col1, col2, col3, col4, col5 = st.columns(5)
-        col1.metric("Temperatura", f"{dados_clima['current']['temperature_2m']} °C")
-        col2.metric("Umidade", f"{dados_clima['current']['relative_humidity_2m']}%")
-        col3.metric("Vento", f"{dados_clima['current']['wind_speed_10m']} km/h")
-        col4.metric("Chuva", f"{dados_clima['current']['precipitation']} mm")
-        col5.metric("Chance de chuva", f"{probabilidade_chuva}%")
-
-        st.subheader("Previsão de chuva para hoje")
-
-        df_previsao = pd.DataFrame({
-            "hora": dados_clima["hourly"]["time"],
-            "probabilidade": dados_clima["hourly"]["precipitation_probability"]
-        })
-
-        fig_previsao = px.line(
-            df_previsao,
-            x="hora",
-            y="probabilidade",
-            labels={"hora": "Hora", "probabilidade": "Chance de chuva (%)"}
-        )
-
-        st.plotly_chart(fig_previsao, use_container_width=True, key="grafico_previsao_chuva")
-
-    else:
-        st.warning("Nenhuma cidade encontrada com esse nome.")
+            st.warning("Não foi possível carregar os dados dessa cidade no momento. Tente novamente em instantes.")
 
 
