@@ -126,3 +126,16 @@ if nome_digitado:
             st.warning("Não foi possível carregar os dados dessa cidade no momento. Tente novamente em instantes.")
 
 
+st.divider()
+st.markdown(
+    """
+    <div style="text-align: center; color: gray; font-size: 14px; padding-top: 10px;">
+        © 2026 Ferri — Dashboard de Clima em Tempo Real<br>
+        Feito com Python, Streamlit e Plotly · Dados via Open-Meteo API<br>
+        Contato: joseferri225@gmail.com · <a href="https://github.com/yosefferri/ClimaTempo" style="color: gray;" target="_blank">GitHub</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
